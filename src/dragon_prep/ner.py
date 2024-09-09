@@ -24,7 +24,6 @@ from spacy.lang.nl import Dutch
 from spacy.tokenizer import Tokenizer
 from spacy.training import offsets_to_biluo_tags
 from tqdm import tqdm
-from unidecode import unidecode
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -215,6 +214,7 @@ def fix_sequence_labels_after_anon(
     strict: bool = True,
 ) -> pd.DataFrame:
     """Experimental function to fix sequence labels after anonymization. This function is not guaranteed to work."""
+    from unidecode import unidecode
     labels_anon = deepcopy(labels_orig)
 
     if verbose:

@@ -205,6 +205,21 @@ def doccano_tokenize(
     return processed_docs
 
 
+def reconstruct_text(tokenized_text: list[spacy.tokens.Token]) -> str:
+    reconstructed_text = ""
+
+    # iterate through each token in the tokenized text
+    for token in tokenized_text:
+        # append the token's text
+        reconstructed_text += token.text
+
+        # Append any whitespaces and/or /n that followed this token
+        if token.whitespace_:
+            reconstructed_text += token.whitespace_
+
+    return reconstructed_text
+
+
 def fix_sequence_labels_after_anon(
     text_orig: str,
     text_anon: str,

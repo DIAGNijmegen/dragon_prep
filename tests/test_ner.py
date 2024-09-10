@@ -1,6 +1,56 @@
 import pytest
 
-from dragon_prep.ner import fix_sequence_labels_after_anon
+from dragon_prep.ner import (fix_sequence_labels_after_anon, ner_tokenizer,
+                             reconstruct_text)
+
+
+def test_tokenizer_reconstruction():
+    # make some sample text with special characters and newlines etc.
+    text = """
+    Hello, World! 🌍✨
+
+    This is a test document with special characters:
+
+    - Bullet points:
+    - ✓ Checkmark
+    - ✗ Cross
+    - → Arrow
+
+    1. Numbers with symbols:
+    - 1️⃣ First
+    - 2️⃣ Second
+    - 3️⃣ Third
+
+    💡 Tips:  
+        - Use `Ctrl + C` to copy.  
+        - Use `Ctrl + V` to paste.  
+
+    Mathematical symbols:  
+        ∑ (Summation), ∫ (Integral), √ (Square root), π (Pi)
+
+    Line break example:  
+    First line...  
+    Second line...  
+
+    Tab example:  
+    \tTabbed text starts here.
+
+    Quotes:  
+    "To be, or not to be, that is the question." — *William Shakespeare*
+
+    End of sample.  
+    Thank you! 🙏
+    """
+
+    # Tokenize the text
+    tokenizer = ner_tokenizer()
+    tokenized_text = tokenizer(text)
+
+    # Reconstruct the text
+    reconstructed_text = reconstruct_text(tokenized_text)
+
+    # Check if the reconstructed text is the same as the original text
+    assert reconstructed_text == text
 
 
 @pytest.mark.parametrize(
@@ -103,4 +153,4 @@ def test_fix_sequence_labels_after_anon(text_orig, labels_orig, text_anon, expec
 
 
 if __name__ == "__main__":
-    pytest.main(['-v', '-k', 'test_fix_sequence_labels_after_anon'])
+    pytest.main(['-v', '-k', 'test_tokenizer_reconstruction'])

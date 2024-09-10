@@ -1,1 +1,1 @@
-docker build . --tag dragon_prep:latest --tag dragon_prep:v0.2.0
+docker build . --tag dragon_prep:latest --tag dragon_prep:v0.2.1

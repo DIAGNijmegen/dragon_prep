@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Any
 
 import gcapi
 from tqdm import tqdm
@@ -51,7 +52,7 @@ else:
         sessions = pickle.load(fp)
 
 # upload training resources to each archive item
-sub_sessions = {}
+sub_sessions: dict[Path, dict[str, Any]] = {}
 
 for dataset_path, session in tqdm(zip(datasets, sessions.values()), desc="Uploading archive items"):
     # upload elements to archive item

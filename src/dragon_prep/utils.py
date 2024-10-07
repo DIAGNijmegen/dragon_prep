@@ -124,6 +124,8 @@ def make_cv_splits(
     test_patient_ids = []
     if df_test is not None:
         dataframes["test"] = df_test
+    elif test_split_size is None:
+        raise ValueError("Either `test_split_size` or `df_test` should be provided.")
     elif test_split_size > 0:
         # make and save the test split
         test_patient_ids = split_ids[:int(test_split_size * len(split_ids))]

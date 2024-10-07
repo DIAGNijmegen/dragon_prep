@@ -14,7 +14,7 @@
 
 import argparse
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -47,7 +47,7 @@ treatment_mapping = {
 }
 
 
-def generate_sample(idx: int) -> Tuple[str, int]:
+def generate_sample(idx: int) -> dict[str, Any]:
     np.random.seed(idx)
     report = ""
 
@@ -79,7 +79,7 @@ def generate_sample(idx: int) -> Tuple[str, int]:
 
 
 def main(
-    output_dir: Union[Path, str] = "/output",
+    output_dir: Path | str = "/output",
     num_examples: int = 750,
     task_name: str = "Task105_Example_ml_mc_clf",
 ) -> None:

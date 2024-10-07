@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Any
 
 import gcapi
 from tqdm import tqdm
@@ -24,7 +25,7 @@ archive = client.archives.detail(slug=archive_slug)
 archive_url = archive["api_url"]
 
 fold = 0
-datasets = [
+dataset_names = [
     # First, the tasks most likely to time out or fail:
     "Task014",  # most samples = most likely to time out
     "Task028",  # most difficult = most likely to fail
@@ -57,7 +58,7 @@ datasets = [
     "Task026",
     "Task027",
 ]
-datasets = [archive_dir.glob(f"{dataset}*-fold{fold}").__next__() for dataset in datasets]
+datasets = [archive_dir.glob(f"{dataset}*-fold{fold}").__next__() for dataset in dataset_names]
 
 if len(datasets) != 28:
     raise Exception(f"Expected 28 datasets, found {len(datasets)}: {datasets}.")
@@ -78,7 +79,7 @@ for dataset_path in tqdm(datasets, desc="Creating archive items"):
     sessions[dataset_path] = session
 
 # upload training resources to each archive item
-sub_sessions = {}
+sub_sessions: dict[Path, dict[str, Any]] = {}
 
 for dataset_path, session in tqdm(zip(datasets, sessions.values()), desc="Uploading archive items"):
     # upload elements to archive item

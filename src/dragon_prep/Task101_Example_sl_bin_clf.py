@@ -14,7 +14,7 @@
 
 import argparse
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -25,7 +25,7 @@ from dragon_prep.synthetic_data_utils import (DIAGNOSES, NOTES, PREFIXES,
 from dragon_prep.utils import split_and_save_data
 
 
-def generate_sample(idx: int, noise: bool = False) -> Tuple[str, int]:
+def generate_sample(idx: int, noise: bool = False) -> dict[str, Any]:
     np.random.seed(idx)
     label = False
     report = ""
@@ -82,7 +82,7 @@ def generate_sample(idx: int, noise: bool = False) -> Tuple[str, int]:
 
 
 def main(
-    output_dir: Union[Path, str] = "/output",
+    output_dir: Path | str = "/output",
     num_examples: int = 500,
     task_name: str = "Task101_Example_sl_bin_clf",
 ) -> None:

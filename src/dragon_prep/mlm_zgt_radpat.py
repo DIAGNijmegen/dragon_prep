@@ -12,7 +12,7 @@ report_paths = [
 save_path = Path("/mnt/data/joeran/mlm_zgt_radpat.json")
 
 # load data
-reports = []
+report_parts = []
 report_column_names = ("PLATTETEXT", "TRANSTEXT", "VERSLAG")
 for report_path in report_paths:
     df = pd.read_csv(report_path, sep=";", encoding="utf-8")
@@ -25,11 +25,11 @@ for report_path in report_paths:
             df = df.rename(columns={column: "uid"})
             break
     print(f"Loaded {len(df)} reports (parts) from {report_path}, {len(df.uid.unique())} studies.")
-    reports.append(df[["uid", "text"]])
+    report_parts.append(df[["uid", "text"]])
 
 # combine reports
-print(f"Combining {len(reports)} report sources")
-reports = pd.concat(reports, axis=0, ignore_index=True)
+print(f"Combining {len(report_parts)} report sources")
+reports = pd.concat(report_parts, axis=0, ignore_index=True)
 print(f"Have {len(reports)} report (parts) from {len(reports.uid.unique())} studies.")
 
 # show info

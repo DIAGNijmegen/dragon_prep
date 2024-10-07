@@ -306,13 +306,15 @@ def split_and_save_data(
             - "single_label_binary_classification_target": must be an int for each case.
             - "multi_label_binary_classification_target": must be an array of ints (each either 0 or 1) for each case.
         task_name (str): The name of the task. The splits will be saved in a directory with this name.
-        output_dir (Path, optional): The output directory. Defaults to None (don't save anything).
+        output_dir (Path or str, optional): The output directory. Defaults to None (don't save anything).
         seed (int, optional): The random seed. Defaults to 42.
         folds (int, optional): The number of folds. Defaults to 5.
         test_split_size (float, optional): The size of the test split. Defaults to 0.3 if df_test is not provided.
         df_test (pd.DataFrame, optional): The dataframe with the test data. Defaults to None (make subset from `df`).
         split_by (str, optional): The column to use for splitting the data between test/train/val. Defaults to "patient_id".
     """
+    # input validation
+    output_dir = Path(output_dir) if output_dir is not None else None
     if test_split_size is not None and test_split_size > 0 and df_test is not None:
         raise ValueError("Cannot specify both `test_split_size > 0` and `df_test`.")
     elif test_split_size is None:

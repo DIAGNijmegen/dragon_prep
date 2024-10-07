@@ -27,7 +27,7 @@ def convert_lesion_size(size: str | float) -> float | None:
     elif isinstance(size, float):
         return size
 
-    size = size.replace(",", ".").strip()
+    size = str(size).replace(",", ".").strip()
     if "x" in size:
         sizes: list[float] = [
             convert_lesion_size(s.strip())

@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -24,8 +23,8 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 
 def preprocess_reports(
     task_name: str,
-    marksheet_path: Union[Path, str],
-    output_dir: Union[Path, str],
+    marksheet_path: Path | str,
+    output_dir: Path,
 ):
     # read marksheet
     df = pd.read_csv(marksheet_path)
@@ -44,7 +43,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

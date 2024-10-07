@@ -15,7 +15,6 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -26,8 +25,8 @@ from dragon_prep.utils import (apply_anon_annotations, num_patients,
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read marksheets
     df = pd.read_excel(input_dir / "pancreas_overview_v2.xlsx", dtype=str)
@@ -91,7 +90,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

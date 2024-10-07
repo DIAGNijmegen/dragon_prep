@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -25,8 +24,8 @@ from dragon_prep.utils import (apply_anon_annotations, num_patients,
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read reports and labels (the PHI labels are in the "label" field, the reports are in the "text" field
     # and the task labels are in the meta->label field)
@@ -60,7 +59,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

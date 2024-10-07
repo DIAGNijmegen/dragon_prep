@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -23,8 +22,8 @@ from dragon_prep.utils import split_and_save_data
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read marksheets
     df_train = pd.read_csv(input_dir / "MEDNLI_train_dutch_dl.txt", sep="\t", header=None, names=["premise", "hypothesis", "label"])

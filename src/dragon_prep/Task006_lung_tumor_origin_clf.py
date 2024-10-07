@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 from dragon_prep.prepare_rumc import prepare_rumc_lung_pathology_reports
 from dragon_prep.utils import prepare_for_anon, read_anon, split_and_save_data
@@ -22,8 +21,8 @@ from dragon_prep.utils import prepare_for_anon, read_anon, split_and_save_data
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # prepare marksheet
     df = prepare_rumc_lung_pathology_reports(input_dir=input_dir)
@@ -45,7 +44,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

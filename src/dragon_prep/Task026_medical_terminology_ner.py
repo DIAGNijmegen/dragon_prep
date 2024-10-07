@@ -15,7 +15,6 @@
 import argparse
 import hashlib
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 from tqdm import tqdm
@@ -32,8 +31,8 @@ except ImportError:
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     """
     Important: requires the Dutch spaCy model to be installed!
@@ -79,7 +78,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

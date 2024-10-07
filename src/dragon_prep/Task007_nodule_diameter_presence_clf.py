@@ -15,7 +15,6 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -23,8 +22,8 @@ from dragon_prep.utils import prepare_for_anon, read_anon, split_and_save_data
 
 
 def read_dataset(
-    marksheet_path: Union[Path, str],
-    reports_path: Union[Path, str],
+    marksheet_path: Path | str,
+    reports_path: Path | str,
 ):
     """
     Read dataset from marksheet and reports.
@@ -53,12 +52,10 @@ def read_dataset(
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # paths
-    input_dir = Path(input_dir)
-
     development_annotations_path = input_dir / "annotations_development.xlsx"
     test_annotations_path = input_dir / "annotations_test.xlsx"
     sampled_development_reports_path = input_dir / "sampled_reports_development.json"
@@ -93,7 +90,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
 ):
     # read anonynimized data
     df_dev = read_anon(output_dir / "anon" / task_name / "nlp-development-dataset.json")

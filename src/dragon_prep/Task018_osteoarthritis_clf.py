@@ -15,7 +15,6 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -25,12 +24,9 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
-    # paths
-    input_dir = Path(input_dir)
-
     # read test set annotations
     df_test = pd.read_csv(input_dir / "annotations.csv", index_col=0)
     df_test["uid"] = df_test["StudyInstanceUID"]
@@ -38,7 +34,7 @@ def preprocess_reports(
     # read reports into a dictionary with StudyInstanceUID as key
     path = input_dir / "MarNavarro.jsonl"
     reports = {}
-    patient_id_map = {}
+    patient_id_map: dict[str, str] = {}
     with open(path, "r") as f:
         for line in f:
             line = line.strip()
@@ -105,7 +101,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
 ):
     # read anonynimized data
     df_dev = read_anon(output_dir / "anon" / task_name / "nlp-development-dataset.json")

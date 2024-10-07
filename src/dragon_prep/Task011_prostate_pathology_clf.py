@@ -15,7 +15,6 @@
 import argparse
 import re
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -27,7 +26,7 @@ from dragon_prep.utils import (apply_anon_annotations, parse_scores,
                                split_and_save_data)
 
 
-def count_isup_2345(scores: Union[str, float]) -> int:
+def count_isup_2345(scores: str | float) -> int:
     scores = parse_scores(scores)
     if isinstance(scores, list):
         return sum(np.array(scores) >= 2)
@@ -85,7 +84,7 @@ def num_patients(df: pd.Series):
 
 
 def prepare_rumc_reports(
-    input_dir: Union[Path, str],
+    input_dir: Path,
 ) -> pd.DataFrame:
     # read marksheet
     df = pd.read_json(input_dir / "PICAI-PubPrivTrain-patient-level-marksheet_v2_with_pathology_study_ids.jsonl", lines=True)
@@ -121,7 +120,7 @@ def prepare_rumc_reports(
 
 
 def prepare_umcg_reports(
-    input_dir: Union[Path, str],
+    input_dir: Path,
 ) -> pd.DataFrame:
     df = prepare_umcg_pathology_reports(input_dir=input_dir)
 
@@ -151,7 +150,7 @@ def prepare_umcg_reports(
 
 
 def prepare_avl_reports(
-    input_dir: Union[Path, str],
+    input_dir: Path,
 ) -> pd.DataFrame:
     # read marksheet
     df = prepare_avl_pathology_reports(input_dir)
@@ -179,8 +178,8 @@ def prepare_avl_reports(
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read RUMC marksheet
     df_rumc = prepare_rumc_reports(input_dir / "rumc/prostate")
@@ -221,7 +220,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data

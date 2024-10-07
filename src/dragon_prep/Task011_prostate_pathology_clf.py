@@ -26,8 +26,8 @@ from dragon_prep.utils import (apply_anon_annotations, parse_scores,
                                split_and_save_data)
 
 
-def count_isup_2345(scores: str | float) -> int:
-    scores = parse_scores(scores)
+def count_isup_2345(s: str | float) -> int:
+    scores = parse_scores(s)
     if isinstance(scores, list):
         return sum(np.array(scores) >= 2)
     elif isinstance(scores, float) and np.isnan(scores):
@@ -63,7 +63,7 @@ def calculate_gleason_score(input_string: str) -> int:
         raise ValueError(f"Invalid Gleason score: {input_string}, numbers: {numbers}")
 
 
-def count_isup_2345_umcg(row: pd.Series) -> int:
+def count_isup_2345_umcg(row: pd.Series) -> int | None:
     text = row["text"]
     num_isup_2345 = 0
     for start, end, label in row["label"]:

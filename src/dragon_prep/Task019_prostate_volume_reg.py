@@ -27,7 +27,7 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
                                split_and_save_data)
 
 
-def extract_prostate_size(s: str) -> tuple:
+def extract_prostate_size(s: str) -> tuple[float, float, float]:
     """Regular expression to find the pattern of prostate size measurements
     Examples:
     - 6 x 5 x 6,6 cm => (6, 5, 6.6)
@@ -68,13 +68,9 @@ def extract_prostate_size(s: str) -> tuple:
 
 def calculate_prostate_volume(s: str) -> float:
     """Calculate the ellipsoidal volume of the prostate based on the dimensions in the input string"""
-    dimensions = extract_prostate_size(s)
+    length, width, height = extract_prostate_size(s)
 
-    if dimensions is None:
-        return np.nan
-
-    # Calculate the ellipsoidal volume
-    length, width, height = dimensions
+    # calculate the ellipsoidal volume
     volume = 4/3 * np.pi * (length / 2) * (width / 2) * (height / 2)
 
     return volume

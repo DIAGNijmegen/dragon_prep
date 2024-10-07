@@ -21,9 +21,13 @@ from typing import Any, Dict, Iterable, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from report_anonymizer.model.anonymizer_functions import Anonymizer
 from sklearn.model_selection import KFold
 from tqdm import tqdm
+
+try:
+    from report_anonymizer.model.anonymizer_functions import Anonymizer
+except ImportError:
+    raise Warning("Anonymizer not found, will not be able to run the anonymization pipeline.")
 
 INPUT_COLUMN_NAMES = [
     "text",

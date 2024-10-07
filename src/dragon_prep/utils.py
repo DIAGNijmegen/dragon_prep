@@ -27,7 +27,7 @@ from tqdm import tqdm
 try:
     from report_anonymizer.model.anonymizer_functions import Anonymizer
 except ImportError:
-    raise Warning("Anonymizer not found, will not be able to run the anonymization pipeline.")
+    print("Anonymizer not found, will not be able to run the anonymization pipeline.")
 
 INPUT_COLUMN_NAMES = [
     "text",

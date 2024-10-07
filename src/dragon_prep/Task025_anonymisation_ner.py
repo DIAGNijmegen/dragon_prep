@@ -28,7 +28,7 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 try:
     from report_anonymizer.model.anonymizer_functions import Anonymizer
 except ImportError:
-    raise Warning("Anonymizer not found, will not be able to run the full pipeline.")
+    print("Anonymizer not found, will not be able to run the full pipeline.")
 
 
 def combine_phi_labels(label: str) -> str:

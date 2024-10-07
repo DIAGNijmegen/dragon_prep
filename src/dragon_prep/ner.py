@@ -33,7 +33,7 @@ def read_jsonl(path):
         return [json.loads(line) for line in f]
 
 
-def biluo_to_bio_tags(tags: list[str], strict: bool = True) -> tuple[list[str], int]:
+def biluo_to_bio_tags(tags: list[str], strict: bool = True) -> list[str]:
     """BILUO is an extended version of the BIO scheme.
     B - beginning, I - inside, L - last, U - unigram, O - outside.
 
@@ -43,7 +43,7 @@ def biluo_to_bio_tags(tags: list[str], strict: bool = True) -> tuple[list[str], 
 
     E.g. B-PERSON, I-ORG, O
     """
-    new_tags = []
+    new_tags: list[str] = []
     num_tokens_skipped = 0
     for t in tags:
         if t == "-":
@@ -69,7 +69,7 @@ def biluo_to_bio_tags(tags: list[str], strict: bool = True) -> tuple[list[str], 
     return new_tags
 
 
-def ner_tokenizer():
+def ner_tokenizer() -> Tokenizer:
     """Define the tokenizer to use for splitting text into tokens for named entity recognition."""
     # Create a custom tokenizer that's not tied to a specific vocabulary
     vocab = spacy.vocab.Vocab()
@@ -136,13 +136,13 @@ def doccano_to_tags(
 ) -> list[dict[str, Any]]:
     """Converts doccano tags to a tokenized list of words with a list of labels per word."""
     nlp = ner_tokenizer()
-    processed_docs = []
+    processed_docs: list[dict[str, Any]] = []
     for row in tqdm(data, desc="Converting offsets"):
         text = row["text"]
         labels = row["label"]
 
         tokenized_text = nlp(text)
-        per_token_labels = {}
+        per_token_labels: dict[int, list[str]] = {}
         for start, end, lbl in labels:
             tags = offsets_to_biluo_tags(
                 tokenized_text, [(start, end, lbl)]
@@ -166,20 +166,20 @@ def doccano_to_tags(
             # add label to per_token_labels
             for i, tag in enumerate(filtered_tags):
                 if tag != "O":
-                    per_token_labels[i] = per_token_labels.get(i, []) + [tag]
+                    per_token_labels[i] = per_token_labels.get(i, []) + [str(tag)]
 
         # filter whitespace tokens out
-        filtered_tokens = [t.text for t in tokenized_text if not t.text.isspace()]
+        text_parts: list[str] = [t.text for t in tokenized_text if not t.text.isspace()]
 
         # convert per_token_labels to a list of labels per token
-        per_token_labels = [
+        per_token_labels_flat = [
             [lbl for lbl in per_token_labels.get(i, ["O"])]
-            for i in range(len(filtered_tokens))
+            for i in range(len(text_parts))
         ]
 
         row = deepcopy(row)
-        row["text_parts"] = filtered_tokens
-        row["label"] = per_token_labels
+        row["text_parts"] = text_parts
+        row["label"] = per_token_labels_flat
         processed_docs.append(row)
 
     return processed_docs

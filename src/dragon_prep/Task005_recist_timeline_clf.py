@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -23,8 +22,8 @@ from dragon_prep.utils import prepare_for_anon, read_anon, split_and_save_data
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read marksheets
     df_jbz = pd.read_excel(input_dir / "JBZ_RECIST_cases_JB_MG.xlsx", dtype=str)
@@ -54,7 +53,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data
@@ -76,7 +75,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for preparing reports")
     parser.add_argument("--task_name", type=str, default="Task005_recist_timeline_clf",
                         help="Name of the task")
-    parser.add_argument("-i", "--input", type=Path, default="/input",
+    parser.add_argument("-i", "--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("-o", "--output", type=Path, default=Path("/output"),
                         help="Folder to store the prepared reports in")

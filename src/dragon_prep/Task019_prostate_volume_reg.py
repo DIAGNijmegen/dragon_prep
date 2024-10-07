@@ -16,7 +16,6 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -28,7 +27,7 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
                                split_and_save_data)
 
 
-def extract_prostate_size(s: str) -> tuple:
+def extract_prostate_size(s: str) -> tuple[float, float, float]:
     """Regular expression to find the pattern of prostate size measurements
     Examples:
     - 6 x 5 x 6,6 cm => (6, 5, 6.6)
@@ -69,13 +68,9 @@ def extract_prostate_size(s: str) -> tuple:
 
 def calculate_prostate_volume(s: str) -> float:
     """Calculate the ellipsoidal volume of the prostate based on the dimensions in the input string"""
-    dimensions = extract_prostate_size(s)
+    length, width, height = extract_prostate_size(s)
 
-    if dimensions is None:
-        return np.nan
-
-    # Calculate the ellipsoidal volume
-    length, width, height = dimensions
+    # calculate the ellipsoidal volume
     volume = 4/3 * np.pi * (length / 2) * (width / 2) * (height / 2)
 
     return volume
@@ -157,8 +152,8 @@ def preprocess_reports_avl(
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read PI-CAI marksheet for RUMC reports
     df_rumc = preprocess_reports_rumc(input_dir / "rumc/prostate")
@@ -196,7 +191,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data
@@ -217,7 +212,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for preparing reports")
     parser.add_argument("--task_name", type=str, default="Task019_prostate_volume_reg",
                         help="Name of the task")
-    parser.add_argument("-i", "--input", type=Path, default="/input",
+    parser.add_argument("-i", "--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("-o", "--output", type=Path, default=Path("/output"),
                         help="Folder to store the prepared reports in")

@@ -14,7 +14,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -471,7 +470,7 @@ def generate_mednli_dataset() -> pd.DataFrame:
 
 
 def main(
-    output_dir: Union[Path, str] = "/output",
+    output_dir: Path | str = "/output",
     task_name="Task103_Example_mednli",
 ) -> None:
     """

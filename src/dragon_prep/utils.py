@@ -17,7 +17,7 @@ import json
 import re
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -27,7 +27,7 @@ from tqdm import tqdm
 try:
     from report_anonymizer.model.anonymizer_functions import Anonymizer
 except ImportError:
-    raise Warning("Anonymizer not found, will not be able to run the anonymization pipeline.")
+    print("Anonymizer not found, will not be able to run the anonymization pipeline.")
 
 INPUT_COLUMN_NAMES = [
     "text",
@@ -46,7 +46,7 @@ TARGET_COLUMN_NAMES = [
 ]
 
 
-def read_marksheet(path: Union[Path, str]) -> pd.DataFrame:
+def read_marksheet(path: Path | str) -> pd.DataFrame:
     extension = Path(path).suffix
     kwargs = {
         "dtype": str,
@@ -124,6 +124,8 @@ def make_cv_splits(
     test_patient_ids = []
     if df_test is not None:
         dataframes["test"] = df_test
+    elif test_split_size is None:
+        raise ValueError("Either `test_split_size` or `df_test` should be provided.")
     elif test_split_size > 0:
         # make and save the test split
         test_patient_ids = split_ids[:int(test_split_size * len(split_ids))]
@@ -155,7 +157,7 @@ def make_cv_splits(
 
 def save_dataframes(
     dataframes: Dict[str, pd.DataFrame],
-    output_dir: Union[Path, str],
+    output_dir: Path,
     task_name: str,
     input_name: str,
     label_names: Iterable[str],
@@ -163,7 +165,6 @@ def save_dataframes(
     task_details: Optional[Dict[str, Any]] = None,
 ) -> None:
     df_test = dataframes.get("test", None)
-    output_dir = Path(output_dir)
     columns = ["uid", input_name, *label_names]
 
     for fold in range(folds):
@@ -195,7 +196,7 @@ def save_dataframes(
 
 
 def prepare_for_anon(
-    output_dir: Union[Path, str],
+    output_dir: Path,
     task_name: str,
     df: Optional[pd.DataFrame] = None,
     df_dev: Optional[pd.DataFrame] = None,
@@ -267,7 +268,7 @@ def prepare_for_anon(
     return df_paths
 
 
-def read_anon(path: Union[Path, str]) -> pd.DataFrame:
+def read_anon(path: Path | str) -> pd.DataFrame:
     """Read the anonymized dataset."""
     # read the dataframe
     df = pd.read_json(path)
@@ -283,11 +284,11 @@ def read_anon(path: Union[Path, str]) -> pd.DataFrame:
 def split_and_save_data(
     df: pd.DataFrame,
     task_name: str,
-    output_dir: Optional[Union[Path, str]] = None,
+    output_dir: Path | str | None = None,
     seed: int = 42,
     folds: int = 5,
-    test_split_size: Optional[float] = None,
-    df_test: Optional[pd.DataFrame] = None,
+    test_split_size: float | None = None,
+    df_test: pd.DataFrame | None = None,
     split_by: str = "patient_id",
     recommended_truncation_side: str = "left",
 ) -> Tuple[Dict[str, pd.DataFrame], Dict[str, int], Dict[str, Any]]:
@@ -305,13 +306,15 @@ def split_and_save_data(
             - "single_label_binary_classification_target": must be an int for each case.
             - "multi_label_binary_classification_target": must be an array of ints (each either 0 or 1) for each case.
         task_name (str): The name of the task. The splits will be saved in a directory with this name.
-        output_dir (Union[Path, str], optional): The output directory. Defaults to None (don't save anything).
+        output_dir (Path or str, optional): The output directory. Defaults to None (don't save anything).
         seed (int, optional): The random seed. Defaults to 42.
         folds (int, optional): The number of folds. Defaults to 5.
         test_split_size (float, optional): The size of the test split. Defaults to 0.3 if df_test is not provided.
         df_test (pd.DataFrame, optional): The dataframe with the test data. Defaults to None (make subset from `df`).
         split_by (str, optional): The column to use for splitting the data between test/train/val. Defaults to "patient_id".
     """
+    # input validation
+    output_dir = Path(output_dir) if output_dir is not None else None
     if test_split_size is not None and test_split_size > 0 and df_test is not None:
         raise ValueError("Cannot specify both `test_split_size > 0` and `df_test`.")
     elif test_split_size is None:

@@ -15,7 +15,6 @@
 import argparse
 import hashlib
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 from tqdm import tqdm
@@ -27,13 +26,13 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 try:
     from report_anonymizer.model.anonymizer_functions import Anonymizer
 except ImportError:
-    raise Warning("Anonymizer not found, will not be able to run the full pipeline.")
+    print("Anonymizer not found, will not be able to run the full pipeline.")
 
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     """
     Important: requires the Dutch spaCy model to be installed!
@@ -79,7 +78,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data
@@ -109,7 +108,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for preparing reports")
     parser.add_argument("--task_name", type=str, default="Task026_medical_terminology_ner",
                         help="Name of the task")
-    parser.add_argument("-i", "--input", type=Path, default="/input",
+    parser.add_argument("-i", "--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("-o", "--output", type=Path, default=Path("/output"),
                         help="Folder to store the prepared reports in")

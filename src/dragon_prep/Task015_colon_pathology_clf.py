@@ -15,7 +15,6 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -25,8 +24,8 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # read marksheets
     df = pd.read_excel(input_dir / "colon_rumc_gt.xlsx")
@@ -100,7 +99,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data
@@ -123,7 +122,7 @@ def prepare_reports(
 if __name__ == "__main__":
     # create the parser
     parser = argparse.ArgumentParser(description="Script for preparing reports")
-    parser.add_argument("-i", "--input", type=Path, default="/input",
+    parser.add_argument("-i", "--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("-o", "--output", type=Path, default=Path("/output"),
                         help="Folder to store the prepared reports in")

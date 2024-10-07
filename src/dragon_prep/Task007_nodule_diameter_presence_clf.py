@@ -15,7 +15,6 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 
@@ -23,8 +22,8 @@ from dragon_prep.utils import prepare_for_anon, read_anon, split_and_save_data
 
 
 def read_dataset(
-    marksheet_path: Union[Path, str],
-    reports_path: Union[Path, str],
+    marksheet_path: Path | str,
+    reports_path: Path | str,
 ):
     """
     Read dataset from marksheet and reports.
@@ -53,12 +52,10 @@ def read_dataset(
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # paths
-    input_dir = Path(input_dir)
-
     development_annotations_path = input_dir / "annotations_development.xlsx"
     test_annotations_path = input_dir / "annotations_test.xlsx"
     sampled_development_reports_path = input_dir / "sampled_reports_development.json"
@@ -93,7 +90,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
 ):
     # read anonynimized data
     df_dev = read_anon(output_dir / "anon" / task_name / "nlp-development-dataset.json")
@@ -114,7 +111,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script for preparing reports")
     parser.add_argument("--task_name", type=str, default="Task007_nodule_diameter_presence_clf",
                         help="Name of the task")
-    parser.add_argument("-i", "--input", type=Path, default="/input",
+    parser.add_argument("-i", "--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("-o", "--output", type=Path, default=Path("/output"),
                         help="Folder to store the prepared reports in")

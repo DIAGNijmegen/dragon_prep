@@ -16,7 +16,6 @@ import argparse
 import hashlib
 import re
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 from tqdm import tqdm
@@ -28,7 +27,7 @@ from dragon_prep.utils import (num_patients, prepare_for_anon, read_anon,
 try:
     from report_anonymizer.model.anonymizer_functions import Anonymizer
 except ImportError:
-    raise Warning("Anonymizer not found, will not be able to run the full pipeline.")
+    print("Anonymizer not found, will not be able to run the full pipeline.")
 
 
 def combine_phi_labels(label: str) -> str:
@@ -179,7 +178,7 @@ def preprocess_reports_rumc_lung_pathology(
 
 
 def preprocess_reports_avl(
-    input_dir: Union[Path, str],
+    input_dir: Path,
 ) -> pd.DataFrame:
     # read reports and labels from AvL
     # the labels are in the format [[start1, end1, label1], [start2, end2, label2], ...], for example [[75, 86, "<DATUM>"]]
@@ -222,11 +221,10 @@ def preprocess_reports_avl(
 
 def preprocess_reports(
     task_name: str,
-    input_dir: Union[Path, str],
-    output_dir: Union[Path, str],
+    input_dir: Path,
+    output_dir: Path,
 ):
     # validate input
-    input_dir = Path(input_dir)
     cols = ["uid", "PatientID", "text", "label"]
 
     # read reports and labels from RUMC
@@ -323,7 +321,7 @@ def preprocess_reports(
 
 def prepare_reports(
     task_name: str,
-    output_dir: Union[Path, str],
+    output_dir: Path,
     test_split_size: float = 0.3,
 ):
     # read anonynimized data
@@ -361,7 +359,7 @@ def prepare_reports(
 if __name__ == "__main__":
     # create the parser
     parser = argparse.ArgumentParser(description="Script for preparing reports")
-    parser.add_argument("--input", type=Path, default="/input",
+    parser.add_argument("--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("--task_name", type=str, default="Task025_anonymisation_ner",
                         help="Name of the task")

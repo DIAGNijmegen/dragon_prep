@@ -78,8 +78,8 @@ def generate_sample(idx: int, noise: bool = False) -> dict[str, Any]:
         # - reconstruct report while randomly removing some spaces (p = 0.025)
         report = add_noise(report)
 
-    label = str(min(label, 4))
-    return {"uid": f"Task102_case{idx}", "text": report, "single_label_multi_class_classification_target": label}
+    lbl = str(min(label, 4))
+    return {"uid": f"Task102_case{idx}", "text": report, "single_label_multi_class_classification_target": lbl}
 
 
 def main(

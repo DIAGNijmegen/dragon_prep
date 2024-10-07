@@ -361,7 +361,7 @@ def prepare_reports(
 if __name__ == "__main__":
     # create the parser
     parser = argparse.ArgumentParser(description="Script for preparing reports")
-    parser.add_argument("--input", type=Path, default="/input",
+    parser.add_argument("--input", type=Path, default=Path("/input"),
                         help="Path to the input data")
     parser.add_argument("--task_name", type=str, default="Task025_anonymisation_ner",
                         help="Name of the task")

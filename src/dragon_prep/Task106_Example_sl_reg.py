@@ -27,7 +27,7 @@ from dragon_prep.utils import split_and_save_data
 
 def generate_sample(idx: int, noise: bool = False) -> dict[str, Any]:
     np.random.seed(idx)
-    label = 0
+    label = 0.0
     report = ""
 
     # generate random report pieces

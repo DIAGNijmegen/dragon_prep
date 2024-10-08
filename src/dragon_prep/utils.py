@@ -291,6 +291,7 @@ def split_and_save_data(
     df_test: pd.DataFrame | None = None,
     split_by: str = "patient_id",
     recommended_truncation_side: str = "left",
+    anonymize_uid: bool = True,
 ) -> Tuple[Dict[str, pd.DataFrame], Dict[str, int], Dict[str, Any]]:
     """Make train, val and test splits.
 
@@ -343,10 +344,11 @@ def split_and_save_data(
         label_names=label_names,
     )
 
-    # override the uid
-    df["uid"] = [f"{task_name}_case{idx}" for idx in range(len(df))]
-    if df_test is not None:
-        df_test["uid"] = [f"{task_name}_test_case{idx}" for idx in range(len(df_test))]
+    if anonymize_uid:
+        # override the uid
+        df["uid"] = [f"{task_name}_case{idx}" for idx in range(len(df))]
+        if df_test is not None:
+            df_test["uid"] = [f"{task_name}_test_case{idx}" for idx in range(len(df_test))]
 
     # make the splits
     dataframes = make_cv_splits(

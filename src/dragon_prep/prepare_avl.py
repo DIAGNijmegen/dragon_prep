@@ -53,6 +53,9 @@ def prepare_avl_radiology_reports(input_dir: Path) -> pd.DataFrame:
     # merge with radiology reports
     df["text"] = df["uid"].map(df_reports["text"].to_dict())
 
+    # cleanup pirads lesions notation
+    df["pirads_lesions"] = df["pirads_lesions"].str.replace(".", ",")
+
     return df
 
 

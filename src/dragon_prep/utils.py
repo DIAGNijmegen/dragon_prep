@@ -43,6 +43,7 @@ TARGET_COLUMN_NAMES = [
     "single_label_binary_classification_target",
     "multi_label_binary_classification_target",
     "multi_label_named_entity_recognition_target",
+    "custom_target",
 ]
 
 
@@ -306,6 +307,7 @@ def split_and_save_data(
             - "multi_label_multi_class_classification_target": must be an array of strings for each case.
             - "single_label_binary_classification_target": must be an int for each case.
             - "multi_label_binary_classification_target": must be an array of ints (each either 0 or 1) for each case.
+            - "custom_target": custom target column (experimental).
         task_name (str): The name of the task. The splits will be saved in a directory with this name.
         output_dir (Path or str, optional): The output directory. Defaults to None (don't save anything).
         seed (int, optional): The random seed. Defaults to 42.

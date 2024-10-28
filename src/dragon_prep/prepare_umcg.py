@@ -50,6 +50,7 @@ def prepare_umcg_radiology_reports(input_dir: Path) -> pd.DataFrame:
 
         umcg_entries.append({
             "num_pirads_345": sum([score >= 3 for score in scores]),
+            "lesion_PIRADS": ",".join(study_df.pirads.values),
             **study_df.iloc[0].to_dict(),
         })
 
@@ -63,6 +64,9 @@ def prepare_umcg_radiology_reports(input_dir: Path) -> pd.DataFrame:
 
     # merge with radiology reports
     df["text"] = df["uid"].map(df_reports.text.to_dict())
+
+    # clean up notation
+    df["lesion_PIRADS"] = df["lesion_PIRADS"].str.replace("NA", "N/A")
 
     return df
 

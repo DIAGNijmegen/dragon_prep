@@ -140,6 +140,7 @@ def prepare_umcg_reports(
 
         umcg_entries.append({
             "label": sum([score >= 7 for score in scores]),
+            "lesion_GS": ",".join([f"{row.gg1}+{row.gg2}" for _, row in study_df.iterrows()]).replace("NA+NA", "N/A"),
             **study_df.iloc[0].to_dict(),
         })
 

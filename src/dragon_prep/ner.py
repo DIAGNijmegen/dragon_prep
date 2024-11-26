@@ -75,7 +75,7 @@ def ner_tokenizer() -> Tokenizer:
     vocab = spacy.vocab.Vocab()
 
     # Add custom prefixes and suffixes for splitting text into tokens
-    split_chars = r'[:;,_\-\.\/\\\+\(\)~<>*]'
+    split_chars = r'[:;,_\-\.\/\\\+\(\)~<>*"\?]'
     prefixes = Dutch.Defaults.prefixes + [split_chars]
     suffixes = [p for p in Dutch.Defaults.suffixes if p != r'\.\.+'] + [split_chars]
     infixes = [p for p in Dutch.Defaults.infixes if p != r'\.\.+'] + [

@@ -64,7 +64,7 @@ def main(
         # plot distribution of report lengths
         f, ax = plt.subplots(figsize=(10, 2.5))
         sns.histplot(lengths, bins=31, ax=ax)
-        ax.set_title(task_name.replace("_clf", "").replace("_reg", "").replace("_ner", "").replace("_", " "))
+        # ax.set_title(task_name.replace("_clf", "").replace("_reg", "").replace("_ner", "").replace("_", " "))
         ax.set_xlabel(f"Report length (tokens, {model_name} tokenizer)")
         ax.set_ylabel("Number of reports")
         f.tight_layout()

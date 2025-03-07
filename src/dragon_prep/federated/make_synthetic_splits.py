@@ -72,7 +72,7 @@ def main(
         df_train.to_json(output_task_dir / "nlp-training-dataset.json", orient="records", indent=2)
         df_val.to_json(output_task_dir / "nlp-validation-dataset.json", orient="records", indent=2)
         df_test[["uid", "center", task_config["input_name"]]].to_json(output_task_dir / "nlp-test-dataset.json", orient="records", indent=2)
-        df_test.to_json(debug_test_dir / f"{task_name}.json", orient="records", indent=2)
+        df_test_labeled.to_json(debug_test_dir / f"{task_name}.json", orient="records", indent=2)
         with open(output_task_dir / "nlp-task-configuration.json", "w") as f:
             json.dump(task_config, f, indent=2)
 

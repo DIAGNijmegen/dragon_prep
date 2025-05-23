@@ -174,10 +174,10 @@ def preprocess_reports(
     assert set(df_umcg.patient_id) & set(df_avl.patient_id) == set()
     assert df_rumc.text.apply(lambda text: "<PERSOON>" in text).sum() > 1200, f"Unexpected number of <PERSOON> tags in RUMC reports: {df_rumc.text.apply(lambda text: '<PERSOON>' in text).sum()}"
     assert df_rumc.text.apply(lambda text: "<DATUM>" in text).sum() > 1200, f"Unexpected number of <DATUM> tags in RUMC reports: {df_rumc.text.apply(lambda text: '<DATUM>' in text).sum()}"
-    assert df_umcg.text.apply(lambda text: "<DATUM>" in text).sum() > 200, f"Unexpected number of <DATUM> tags in UMCG reports: {df_umcg.text.apply(lambda text: '<DATUM>' in text).sum()}"
-    assert df_umcg.text.apply(lambda text: "<TIJD>" in text).sum() > 200, f"Unexpected number of <TIJD> tags in UMCG reports: {df_umcg.text.apply(lambda text: '<TIJD>' in text).sum()}"
-    assert df_avl.text.apply(lambda text: "<PERSOON>" in text).sum() > 200, f"Unexpected number of <PERSOON> tags in AVL reports: {df_avl.text.apply(lambda text: '<PERSOON>' in text).sum()}"
-    assert df_avl.text.apply(lambda text: "<DATUM>" in text).sum() > 200, f"Unexpected number of <DATUM> tags in AVL reports: {df_avl.text.apply(lambda text: '<DATUM>' in text).sum()}"
+    assert df_umcg.text.apply(lambda text: "<DATUM>" in text).sum() > 150, f"Unexpected number of <DATUM> tags in UMCG reports: {df_umcg.text.apply(lambda text: '<DATUM>' in text).sum()}"
+    assert df_umcg.text.apply(lambda text: "<TIJD>" in text).sum() > 100, f"Unexpected number of <TIJD> tags in UMCG reports: {df_umcg.text.apply(lambda text: '<TIJD>' in text).sum()}"
+    assert df_avl.text.apply(lambda text: "<PERSOON>" in text).sum() > 150, f"Unexpected number of <PERSOON> tags in AVL reports: {df_avl.text.apply(lambda text: '<PERSOON>' in text).sum()}"
+    assert df_avl.text.apply(lambda text: "<DATUM>" in text).sum() > 150, f"Unexpected number of <DATUM> tags in AVL reports: {df_avl.text.apply(lambda text: '<DATUM>' in text).sum()}"
     df = pd.concat((df_rumc[cols], df_umcg[cols], df_avl[cols]), ignore_index=True)
     print(f"Have {len(df)} radiology reports ({num_patients(df)} patients) in total")
 

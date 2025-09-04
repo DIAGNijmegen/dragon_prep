@@ -14,12 +14,12 @@ docker run --rm \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task007_nodule_diameter_presence_clf.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task010_prostate_radiology_clf.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task011_prostate_pathology_clf.py
 
@@ -29,17 +29,17 @@ docker run --rm \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task016_recist_lesion_size_presence_clf.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task019_prostate_volume_reg.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task020_psa_reg.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task021_psad_reg.py
 
@@ -54,7 +54,7 @@ docker run --rm \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task024_recist_lesion_size_reg.py
 
 docker run --rm \
-    -v /Users/joeranbosma/repos/dragon_data:/input:ro \
+    -v /Users/joeranbosma/repos/dragon_data/data:/input:ro \
     -v /Users/joeranbosma/repos/dragon_data/data/preprocessed/federated:/output \
     dragon_prep:latest python /opt/app/dragon_prep/src/dragon_prep/federated/Task025_anonymisation_ner.py
 

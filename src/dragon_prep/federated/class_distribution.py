@@ -11,8 +11,7 @@ def get_dataset_distribution_dict(development_dir: Path, test_dir: Path):
     training_files = list(development_dir.glob("Task*/nlp-training-dataset.json"))
     test_files = list(test_dir.glob("Task*.json"))
     def parse_split(file_list, split):
-        df_dict = {
-        }
+        df_dict = {}
         for file in file_list:
             if match := re.search(r"(Task\d+_[a-zA-Z_]+)-fold(\d+)", file.as_posix()):
                 task_name, fold = match.groups()

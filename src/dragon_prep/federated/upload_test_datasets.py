@@ -1,4 +1,6 @@
+import json
 import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -10,7 +12,7 @@ Upload archive to Grand Challenge using the gcapi
 """
 
 # paths
-archive_dir = Path("/Users/joeranbosma/repos/dragon_data/preprocessed/federated/algorithm-input")
+archive_dir = Path("/Users/joeranbosma/repos/dragon_data/data/preprocessed/federated/algorithm-input")
 token = os.getenv("GC_TOKEN")
 
 # name of the archive
@@ -22,6 +24,29 @@ client = gcapi.Client(token=token)
 # select archive
 archive = client.archives.detail(slug=archive_slug)
 archive_url = archive["api_url"]
+
+def upload(pk: str, path: Path, interface_name: str) -> dict[str, Any]:
+    """Upload a file to an archive item, retrying on failure."""
+    # copy path and re-save without indentation
+    with open(path, "r") as f:
+        data = json.load(f)
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir) / "file.json"
+        with open(tmp_path, "w") as f:
+            json.dump(data, f)
+        print(f"Uploading {path} to {interface_name} from {tmp_path}..")
+
+        try:
+            return client.update_archive_item(
+                archive_item_pk=pk,
+                values={
+                    interface_name: [tmp_path],
+                },
+            )
+        except Exception as e:
+            print(f"Error uploading {path} to {interface_name}: {e}. Retrying...")
+            return upload(pk=pk, path=path, interface_name=interface_name)
+
 
 for fold in range(5):
     dataset_names = [
@@ -76,11 +101,10 @@ for fold in range(5):
             assert path.exists()
 
             print(f"Uploading {path}..")
-            sub_session = client.update_archive_item(
-                archive_item_pk=session['pk'],
-                values={
-                    interface_name: [path],
-                },
+            sub_session = upload(
+                pk=session['pk'],
+                path=path,
+                interface_name=interface_name,
             )
 
             if dataset_path not in sub_sessions:
